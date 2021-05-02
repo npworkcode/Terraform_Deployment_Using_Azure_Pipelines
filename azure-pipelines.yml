@@ -25,7 +25,7 @@ stages:
           terraformVersion: 'latest'
       - task: DownloadSecureFile@1
         inputs:
-          secureFile: 'td_key.pub'
+          secureFile: 'tfkey.pub'
           socketTimeout: '30000'
           retryCount: 8
 
@@ -58,7 +58,7 @@ stages:
                             -var ARM_CLIENT_SECRET    = $env:TF_ARM_CLIENT_SECRET   \
                             -var ARM_SUBSCRIPTION_ID  = $env:TF_ARM_SUBSCRIPTION_ID \
                             -var ARM_TENANT_ID        = $env:TF_ARM_TENANT_ID       \
-                            -var fileloc              = $(Agent.TempDirectory)/td_key.pub'
+                            -var fileloc              = $(Agent.TempDirectory)/tfkey.pub'
 
       - task: TerraformCLI@0
         displayName: 'terraform validate'
@@ -105,5 +105,5 @@ stages:
                               -var ARM_CLIENT_SECRET    = $env:TF_ARM_CLIENT_SECRET   \
                               -var ARM_SUBSCRIPTION_ID  = $env:TF_ARM_SUBSCRIPTION_ID \
                               -var ARM_TENANT_ID        = $env:TF_ARM_TENANT_ID       \
-                              -var fileloc              = $(Agent.TempDirectory)/td_key.pub'
+                              -var fileloc              = $(Agent.TempDirectory)/tfkey.pub'
             publishPlanResults: 'terraform.tfplan'
