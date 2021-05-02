@@ -61,6 +61,11 @@ stages:
                             -var fileloc              = $(Agent.TempDirectory)/td_key.pub'
 
       - task: TerraformCLI@0
+        displayName: 'terraform validate'
+        inputs:
+          command: 'validate'
+          allowTelemetryCollection: true
+      - task: TerraformCLI@0
         displayName: 'terraform plan'
         env:
             TF_APS_RESOURCE_GROUP_NAME    : $(aps-resource-group-name)
