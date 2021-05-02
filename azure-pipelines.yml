@@ -97,7 +97,7 @@ stages:
             TF_ARM_TENANT_ID              : $(aps-tenant-id)
           inputs:
             command: 'plan'
-            secureVarsFile: $(Agent.TempDirectory)/terraform.tfvars
+            secureVarsFile: '$(Agent.TempDirectory)/terraform.tfvars'
             backendType: azurerm
             ensureBackend: true
             backendAzureRmResourceGroupName:  $env:TF_APS_RESOURCE_GROUP_NAME
