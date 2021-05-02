@@ -10,8 +10,11 @@ variables:
 - group: TF_SERVICE_PRINCIPAL
 - group: TF_BACKEND_CONFIG
 
+
+
 stages:
   - stage: validate
+
     jobs:
     - job: validate
       continueOnError: false
@@ -20,19 +23,50 @@ stages:
         displayName: Install Terraform
         inputs:
           terraformVersion: 'latest'
+      - task: DownloadSecureFile@1
+        inputs:
+          secureFile: 'td_key.pub'
+          socketTimeout: '30000'
       - task: TerraformCLI@0
         displayName: 'terraform init'
+        env:
+            TF_APS_RESOURCE_GROUP_NAME    : $(aps-resource-group-name)
+            TF_APS_RESOURCE_CONTAINER_NAME: $(aps-container-name)
+            TF_APS_STORAGE_ACCOUNT_NAME   : $(aps-storage-account-name)
+            TF_APS_KEY                    : $(aps-key)
+            TF_ARM_CLIENT_ID              : $(aps-arm-client-id)
+            TF_ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
+            TF_ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
+            TF_ARM_TENANT_ID              : $(aps-tenant-id)
         inputs:
           command: 'init'
           backendType: azurerm
           ensureBackend: true
-          backendAzureRmResourceGroupName:  $(aps-resource-group-name)
-          backendAzureRmContainerName:      $(aps-container-name)
-          backendAzureRmStorageAccountName: $(aps-storage-account-name)
-          backendAzureRmKey:                $(aps-key)
+          backendAzureRmResourceGroupName:  $env:TF_APS_RESOURCE_GROUP_NAME
+          backendAzureRmContainerName:      $env:TF_APS_RESOURCE_CONTAINER_NAME
+          backendAzureRmStorageAccountName: $env:TF_APS_STORAGE_ACCOUNT_NAME
+          backendAzureRmKey:                $env:TF_APS_KEY
           allowTelemetryCollection: true
-          commandOptions:  '-var ARM_CLIENT_ID        = $(aps-arm-client-id)      \
-                            -var ARM_CLIENT_SECRET    = $(aps-arm-client-secret)  \
-                            -var ARM_SUBSCRIPTION_ID  = ${aps-subscription-id}    \
-                            -var ARM_TENANT_ID        = $(aps-tenant-id)'
+          commandOptions:  '-var ARM_CLIENT_ID        = $env:TF_ARM_CLIENT_ID       \
+                            -var ARM_CLIENT_SECRET    = $env:TF_ARM_CLIENT_SECRET   \
+                            -var ARM_SUBSCRIPTION_ID  = $env:TF_ARM_SUBSCRIPTION_ID \
+                            -var ARM_TENANT_ID        = $env:TF_ARM_TENANT_ID       \
+                            -var fileloc              = $(Agent.TempDirectory)/td_key.pub'
 
+      - task: TerraformCLI@0
+        displayName: 'terraform plan'
+        env:
+            TF_APS_RESOURCE_GROUP_NAME    : $(aps-resource-group-name)
+            TF_APS_RESOURCE_CONTAINER_NAME: $(aps-container-name)
+            TF_APS_STORAGE_ACCOUNT_NAME   : $(aps-storage-account-name)
+            TF_APS_KEY                    : $(aps-key)
+            TF_ARM_CLIENT_ID              : $(aps-arm-client-id)
+            TF_ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
+            TF_ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
+            TF_ARM_TENANT_ID              : $(aps-tenant-id)
+        inputs:
+          command: 'plan'
+          secureVarsFile: 'td_key.pub'
+          commandOptions: '-input=true'
+          allowTelemetryCollection: true
+          publishPlanResults: 'terraform.plan'
