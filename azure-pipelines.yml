@@ -78,6 +78,12 @@ stages:
           inputs:
             terraformVersion: 'latest'
 
+        - task: DownloadSecureFile@1
+          inputs:
+            secureFile: 'terraform.tfvars'
+            socketTimeout: '30000'
+            retryCount: 8
+
         - task: TerraformCLI@0
           displayName: 'terraform plan'
           env:
