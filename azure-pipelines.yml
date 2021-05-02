@@ -65,9 +65,21 @@ stages:
         inputs:
           command: 'validate'
           allowTelemetryCollection: true
-      - task: TerraformCLI@0
-        displayName: 'terraform plan'
-        env:
+  
+  - stage: plan
+    dependsOn: [validate]
+    condition: succeeded('validate')
+    jobs:
+      - job: terraform_plan_develop
+        steps:
+        - task: TerraformInstaller@0
+          displayName: Terraform Install
+          inputs:
+            terraformVersion: 'latest'
+
+        - task: TerraformCLI@0
+          displayName: 'terraform plan'
+          env:
             TF_APS_RESOURCE_GROUP_NAME    : $(aps-resource-group-name)
             TF_APS_RESOURCE_CONTAINER_NAME: $(aps-container-name)
             TF_APS_STORAGE_ACCOUNT_NAME   : $(aps-storage-account-name)
@@ -76,22 +88,22 @@ stages:
             TF_ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
             TF_ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
             TF_ARM_TENANT_ID              : $(aps-tenant-id)
-        inputs:
-          command: 'plan'
-          secureVarsFile: $(Agent.TempDirectory)/terraform.tfvars
-          backendType: azurerm
-          ensureBackend: true
-          backendAzureRmResourceGroupName:  $env:TF_APS_RESOURCE_GROUP_NAME
-          backendAzureRmContainerName:      $env:TF_APS_RESOURCE_CONTAINER_NAME
-          backendAzureRmStorageAccountName: $env:TF_APS_STORAGE_ACCOUNT_NAME
-          backendAzureRmKey:                $env:TF_APS_KEY
-          allowTelemetryCollection:         true
-          commandOptions:  '-input=true                                             \
-                            -out=$(System.DefaultWorkingDirectory)/terraform.tfplan \
-                            -detailed-exitcode                                      \
-                            -var ARM_CLIENT_ID        = $env:TF_ARM_CLIENT_ID       \
-                            -var ARM_CLIENT_SECRET    = $env:TF_ARM_CLIENT_SECRET   \
-                            -var ARM_SUBSCRIPTION_ID  = $env:TF_ARM_SUBSCRIPTION_ID \
-                            -var ARM_TENANT_ID        = $env:TF_ARM_TENANT_ID       \
-                            -var fileloc              = $(Agent.TempDirectory)/td_key.pub'
-          publishPlanResults: 'terraform.tfplan'
+          inputs:
+            command: 'plan'
+            secureVarsFile: $(Agent.TempDirectory)/terraform.tfvars
+            backendType: azurerm
+            ensureBackend: true
+            backendAzureRmResourceGroupName:  $env:TF_APS_RESOURCE_GROUP_NAME
+            backendAzureRmContainerName:      $env:TF_APS_RESOURCE_CONTAINER_NAME
+            backendAzureRmStorageAccountName: $env:TF_APS_STORAGE_ACCOUNT_NAME
+            backendAzureRmKey:                $env:TF_APS_KEY
+            allowTelemetryCollection:         true
+            commandOptions:  '-input=true                                             \
+                              -out=$(System.DefaultWorkingDirectory)/terraform.tfplan \
+                              -detailed-exitcode                                      \
+                              -var ARM_CLIENT_ID        = $env:TF_ARM_CLIENT_ID       \
+                              -var ARM_CLIENT_SECRET    = $env:TF_ARM_CLIENT_SECRET   \
+                              -var ARM_SUBSCRIPTION_ID  = $env:TF_ARM_SUBSCRIPTION_ID \
+                              -var ARM_TENANT_ID        = $env:TF_ARM_TENANT_ID       \
+                              -var fileloc              = $(Agent.TempDirectory)/td_key.pub'
+            publishPlanResults: 'terraform.tfplan'
