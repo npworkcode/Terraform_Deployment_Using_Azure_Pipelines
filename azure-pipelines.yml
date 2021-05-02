@@ -38,10 +38,10 @@ stages:
             TF_APS_RESOURCE_CONTAINER_NAME: $(aps-container-name)
             TF_APS_STORAGE_ACCOUNT_NAME   : $(aps-storage-account-name)
             TF_APS_KEY                    : $(aps-key)
-            TF_ARM_CLIENT_ID              : $(aps-arm-client-id)
-            TF_ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
-            TF_ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
-            TF_ARM_TENANT_ID              : $(aps-tenant-id)
+            ARM_CLIENT_ID                 : $(aps-arm-client-id)
+            ARM_CLIENT_SECRET             : $(aps-arm-client-secret)
+            ARM_SUBSCRIPTION_ID           : $(aps-subscription-id)
+            ARM_TENANT_ID                 : $(aps-tenant-id)
         inputs:
           command: 'init'
           backendType: azurerm
@@ -51,10 +51,10 @@ stages:
           backendAzureRmStorageAccountName: $env:TF_APS_STORAGE_ACCOUNT_NAME
           backendAzureRmKey:                $env:TF_APS_KEY
           allowTelemetryCollection: true
-          commandOptions:  '-var ARM_CLIENT_ID        = $env:TF_ARM_CLIENT_ID       \
-                            -var ARM_CLIENT_SECRET    = $env:TF_ARM_CLIENT_SECRET   \
-                            -var ARM_SUBSCRIPTION_ID  = $env:TF_ARM_SUBSCRIPTION_ID \
-                            -var ARM_TENANT_ID        = $env:TF_ARM_TENANT_ID       \
+          commandOptions:  '-var ARM_CLIENT_ID        = $env:ARM_CLIENT_ID       \
+                            -var ARM_CLIENT_SECRET    = $env:ARM_CLIENT_SECRET   \
+                            -var ARM_SUBSCRIPTION_ID  = $env:ARM_SUBSCRIPTION_ID \
+                            -var ARM_TENANT_ID        = $env:ARM_TENANT_ID       \
                             -var fileloc              = $(tfPublicKey.secureFilePath)'
 
       - task: TerraformCLI@0
