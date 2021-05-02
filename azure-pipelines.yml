@@ -76,10 +76,14 @@ stages:
 
         - task: DownloadSecureFile@1
           name: tfVarsFile
+          displayName: 'Download Terraform input variables file'
           inputs:
             secureFile: 'terraform.tfvars'
             socketTimeout: '30000'
             retryCount: 8
+
+        - script: |
+            echo Using $(tfVarsFile.secureFilePath) as Terraform input....
 
         - task: TerraformCLI@0
           displayName: 'terraform plan'
