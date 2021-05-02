@@ -1,11 +1,14 @@
 # Azure Pipeline for Terraform Deployment
 # Author: Nigel P
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+
 
 trigger: none
 
 pool: ubuntulatest
+
+variables:
+- group: TF_SERVICE_PRINCIPAL
+- group: TF_BACKEND_CONFIG
 
 stages:
   - stage: validate
@@ -19,12 +22,17 @@ stages:
           terraformVersion: 'latest'
       - task: TerraformCLI@0
         displayName: 'terraform init'
-        env:
-          ARM_SUBSCRIPTION_ID: ${aps}
         inputs:
           command: 'init'
           backendType: azurerm
           ensureBackend: true
-          backendAzureRmResourceGroupName: 
+          backendAzureRmResourceGroupName:  $(aps-resource-group-name)
+          backendAzureRmContainerName:      $(aps-container-name)
+          backendAzureRmStorageAccountName: $(aps-storage-account-name)
+          backendAzureRmKey:                $(aps-key)
           allowTelemetryCollection: true
+          commandOptions:  '-var ARM_CLIENT_ID        = $(aps-arm-client-id)      \
+                            -var ARM_CLIENT_SECRET    = $(aps-arm-client-secret)  \
+                            -var ARM_SUBSCRIPTION_ID  = ${aps-subscription-id}    \
+                            -var ARM_TENANT_ID        = $(aps-tenant-id)'
 
