@@ -4,7 +4,8 @@
 
 trigger: none
 
-pool: ubuntu-latest
+pool: 
+  vmImage: 'ubuntu-latest'
 
 variables:
 - group: TF_SERVICE_PRINCIPAL
