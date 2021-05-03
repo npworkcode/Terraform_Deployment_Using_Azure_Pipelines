@@ -58,12 +58,7 @@ stages:
           backendAzureRmContainerName: '$TF_APS_CONTAINER_NAME'
           backendAzureRmKey: '$TF_APS_KEY'
           backendAzureRmResourceGroupName: '$TF_APS_RESOURCE_GROUP_NAME'
-          commandOptions: |-
-           '-var ARM_CLIENT_ID=$TF_ARM_CLIENT_ID 
-           -var ARM_CLIENT_SECRET=$TF_ARM_CLIENT_SECRET 
-           -var ARM_SUBSCRIPTION_ID=$TF_ARM_SUBSCRIPTION_ID 
-           -var ARM_TENANT_ID=$TF_ARM_TENANT_ID 
-           -var fileloc=$(tfPublicKey.secureFilePath)'
+          commandOptions: '-var ARM_CLIENT_ID=$TF_ARM_CLIENT_ID -var ARM_CLIENT_SECRET=$TF_ARM_CLIENT_SECRET -var ARM_SUBSCRIPTION_ID=$TF_ARM_SUBSCRIPTION_ID -var ARM_TENANT_ID=$TF_ARM_TENANT_ID -var fileloc=$(tfPublicKey.secureFilePath)'
 
 
       - task: TerraformCLI@0
