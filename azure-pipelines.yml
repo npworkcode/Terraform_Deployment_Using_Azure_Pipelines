@@ -46,7 +46,7 @@ stages:
             -var ARM_SUBSCRIPTION_ID="$TF_ARM_SUBSCRIPTION_ID" \
             -var ARM_CLIENT_ID="$TF_ARM_CLIENT_ID" \
             -var ARM_CLIENT_SECRET="$TF_ARM_CLIENT_SECRET" \
-            -var ARM_TENANT_ID="$TF_ARM_TENANT_ID" \
+            -var ARM_TENANT_ID="$TF_ARM_TENANT_ID" 
         displayName: "Terraform Init"
         env:
             TF_APS_RESOURCE_GROUP_NAME    : $(aps-resource-group-name)
