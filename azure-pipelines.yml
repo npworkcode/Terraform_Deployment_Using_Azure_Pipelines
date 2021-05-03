@@ -31,6 +31,13 @@ stages:
           socketTimeout: '30000'
           retryCount: 8
 
+      - task: DownloadSecureFile@1
+        name: tfVarsFile
+        displayName: 'Download Terraform input variables file'
+        inputs:
+          secureFile: 'terraform.tfvars'
+          socketTimeout: '30000'
+          retryCount: 8
       - task: TerraformCLI@0
         displayName: 'terraform init'
         env:
@@ -41,17 +48,19 @@ stages:
             TF_ARM_CLIENT_ID              : $(aps-arm-client-id)
             TF_ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
             TF_ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
-            TF_ARM_TENANT_ID               : $(aps-tenant-id)
+            TF_ARM_TENANT_ID              : $(aps-tenant-id)
         inputs:
           command: 'init'
+          secureVarsFile: '$(tfVarsFile.secureFilePath)'
           allowTelemetryCollection: true
           backendType: azurerm
-          backendServiceArm: 'TerraformServiceConnection'
-          backendAzureRmStorageAccountName: $env:TF_APS_STORAGE_ACCOUNT_NAME
-          backendAzureRmContainerName: $env:TF_APS_RESOURCE_CONTAINER_NAME
-          backendAzureRmKey: $env:TF_APS_KEY
-          backendAzureRmResourceGroupName: $env:TF_APS_RESOURCE_GROUP_NAME
-          commandOptions:  '-var ARM_CLIENT_ID=$TF_ARM_CLIENT_ID -var ARM_CLIENT_SECRET=$TF_ARM_CLIENT_SECRET -var ARM_SUBSCRIPTION_ID=$TF_ARM_SUBSCRIPTION_ID -var ARM_TENANT_ID=$TF_ARM_TENANT_ID -backend-config="storage_account_name=$TF_APS_STORAGE_ACCOUNT_NAME" -backend-config="container_name=$TF_APS_RESOURCE_CONTAINER_NAME" -backend-config="resource_group_name=$TF_APS_RESOURCE_GROUP_NAME" -backend-config="key=$TF_APS_KEY" -var fileloc=$(tfPublicKey.secureFilePath)'
+          backendServiceArm: 'Azure subscription 1(fd267d27-d3b1-4597-81dc-e98d71ee70de)'
+          backendAzureRmStorageAccountName: '$(aps-storage-account-name)'
+          backendAzureRmContainerName: '$(aps-container-name)'
+          backendAzureRmKey: '$(aps-key)'
+          backendAzureRmResourceGroupName: '$(aps-resource-group-name)'
+          commandOptions:  '-var ARM_CLIENT_ID=$TF_ARM_CLIENT_ID -var ARM_CLIENT_SECRET=$TF_ARM_CLIENT_SECRET -var ARM_SUBSCRIPTION_ID=$TF_ARM_SUBSCRIPTION_ID -var ARM_TENANT_ID=$TF_ARM_TENANT_ID'
+
 
       - task: TerraformCLI@0
         displayName: 'terraform validate'
