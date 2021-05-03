@@ -53,19 +53,18 @@ stages:
           command: 'init'
           allowTelemetryCollection: true
           backendType: azurerm
-          backendServiceArm: 'Azure subscription 1(fd267d27-d3b1-4597-81dc-e98d71ee70de)'
-          backendAzureRmStorageAccountName: '$(aps-storage-account-name)'
-          backendAzureRmContainerName: '$(aps-container-name)'
-          backendAzureRmKey: '$(aps-key)'
+          backendServiceArm: '$TF_ARM_SUBSCRIPTION_ID'
+          backendAzureRmStorageAccountName: '$TF_APS_STORAGE_ACCOUNT_NAME'
+          backendAzureRmContainerName: '$TF_APS_RESOURCE_CONTAINER_NAME'
+          backendAzureRmKey: '$TF_APS_KEY'
           backendAzureRmResourceGroupName: '$(aps-resource-group-name)'
-          commandOptions:  '-var ARM_CLIENT_ID=$TF_ARM_CLIENT_ID -var ARM_CLIENT_SECRET=$TF_ARM_CLIENT_SECRET -var ARM_SUBSCRIPTION_ID=$TF_ARM_SUBSCRIPTION_ID -var ARM_TENANT_ID=$TF_ARM_TENANT_ID'
+          commandOptions:  '-var ARM_CLIENT_ID=$TF_ARM_CLIENT_ID -var ARM_CLIENT_SECRET=$TF_ARM_CLIENT_SECRET -var ARM_SUBSCRIPTION_ID=$TF_ARM_SUBSCRIPTION_ID -var ARM_TENANT_ID=$TF_ARM_TENANT_ID -var fileloc=$(tfPublicKey.secureFilePath)'
 
 
       - task: TerraformCLI@0
         displayName: 'terraform validate'
         inputs:
           command: 'validate'
-          commandOptions: '-var fileloc=$(tfPublicKey.secureFilePath)'
           allowTelemetryCollection: true
   
   - stage: plan
