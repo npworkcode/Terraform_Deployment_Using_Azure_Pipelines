@@ -45,15 +45,15 @@ stages:
         inputs:
           command: 'init'
           allowTelemetryCollection: true
-          commandOptions:  '-var ARM_CLIENT_ID        = $TF_ARM_CLIENT_ID                                   \
-                            -var ARM_CLIENT_SECRET    = $TF_ARM_CLIENT_SECRET                               \
-                            -var ARM_SUBSCRIPTION_ID  = $TF_ARM_SUBSCRIPTION_ID                             \
-                            -var ARM_TENANT_ID        = $TF_ARM_TENANT_ID                                   \
-                            -backend-config           = "storage_account_name=$TF_APS_STORAGE_ACCOUNT_NAME" \
-                            -backend-config           = "container_name=$TF_APS_RESOURCE_CONTAINER_NAME"    \
-                            -backend-config           = "resource_group_name=$TF_APS_RESOURCE_GROUP_NAME"   \
-                            -backend-config           = "key=$TF_APS_KEY"                                   \
-                            -var fileloc              = $(tfPublicKey.secureFilePath)'
+          commandOptions:  '-var ARM_CLIENT_ID=$TF_ARM_CLIENT_ID
+                            -var ARM_CLIENT_SECRET=$TF_ARM_CLIENT_SECRET
+                            -var ARM_SUBSCRIPTION_ID=$TF_ARM_SUBSCRIPTION_ID
+                            -var ARM_TENANT_ID=$TF_ARM_TENANT_ID
+                            -backend-config="storage_account_name=$TF_APS_STORAGE_ACCOUNT_NAME"
+                            -backend-config="container_name=$TF_APS_RESOURCE_CONTAINER_NAME"
+                            -backend-config="resource_group_name=$TF_APS_RESOURCE_GROUP_NAME"
+                            -backend-config="key=$TF_APS_KEY"
+                            -var fileloc=$(tfPublicKey.secureFilePath)'
 
       - task: TerraformCLI@0
         displayName: 'terraform validate'
@@ -106,10 +106,10 @@ stages:
             commandOptions:  '-input=true                                               \
                               -out=$(System.DefaultWorkingDirectory)/terraform.tfplan   \
                               -detailed-exitcode                                        \
-                              -var ARM_CLIENT_ID        = $TF_ARM_CLIENT_ID         \
-                              -var ARM_CLIENT_SECRET    = $TF_ARM_CLIENT_SECRET     \
-                              -var ARM_SUBSCRIPTION_ID  = $TF_ARM_SUBSCRIPTION_ID   \
-                              -var ARM_TENANT_ID        = $TF_ARM_TENANT_ID         \
-                              -var-file                 = $(tfVarsFile.secureFilePath)  \
-                              -var fileloc              = $(tfPublicKey.secureFilePath)'
+                              -var ARM_CLIENT_ID=$TF_ARM_CLIENT_ID         \
+                              -var ARM_CLIENT_SECRET=$TF_ARM_CLIENT_SECRET     \
+                              -var ARM_SUBSCRIPTION_ID=$TF_ARM_SUBSCRIPTION_ID   \
+                              -var ARM_TENANT_ID=$TF_ARM_TENANT_ID         \
+                              -var-file=$(tfVarsFile.secureFilePath)  \
+                              -var fileloc=$(tfPublicKey.secureFilePath)'
             publishPlanResults: 'terraform.tfplan'
