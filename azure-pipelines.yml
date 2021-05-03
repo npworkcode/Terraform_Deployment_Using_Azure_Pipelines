@@ -42,7 +42,7 @@ stages:
         displayName: 'terraform init'
         env:
             TF_APS_RESOURCE_GROUP_NAME    : $(aps-resource-group-name)
-            TF_APS_RESOURCE_CONTAINER_NAME: $(aps-container-name)
+            TF_APS_CONTAINER_NAME: $(aps-container-name)
             TF_APS_STORAGE_ACCOUNT_NAME   : $(aps-storage-account-name)
             TF_APS_KEY                    : $(aps-key)
             TF_ARM_CLIENT_ID              : $(aps-arm-client-id)
@@ -55,7 +55,7 @@ stages:
           backendType: azurerm
           backendServiceArm: 'SCTerraform'
           backendAzureRmStorageAccountName: '$TF_APS_STORAGE_ACCOUNT_NAME'
-          backendAzureRmContainerName: '$TF_APS_RESOURCE_CONTAINER_NAME'
+          backendAzureRmContainerName: '$TF_APS_CONTAINER_NAME'
           backendAzureRmKey: '$TF_APS_KEY'
           backendAzureRmResourceGroupName: '$(aps-resource-group-name)'
           commandOptions:  '-var ARM_CLIENT_ID=$TF_ARM_CLIENT_ID -var ARM_CLIENT_SECRET=$TF_ARM_CLIENT_SECRET -var ARM_SUBSCRIPTION_ID=$TF_ARM_SUBSCRIPTION_ID -var ARM_TENANT_ID=$TF_ARM_TENANT_ID -var fileloc=$(tfPublicKey.secureFilePath)'
