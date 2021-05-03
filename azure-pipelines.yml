@@ -45,6 +45,7 @@ stages:
         inputs:
           command: 'init'
           allowTelemetryCollection: true
+          environmentServiceName: 'TerraformServiceConnection'
           commandOptions:  '-var ARM_CLIENT_ID=$TF_ARM_CLIENT_ID
                             -var ARM_CLIENT_SECRET=$TF_ARM_CLIENT_SECRET
                             -var ARM_SUBSCRIPTION_ID=$TF_ARM_SUBSCRIPTION_ID
