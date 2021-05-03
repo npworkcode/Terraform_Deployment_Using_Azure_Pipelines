@@ -86,9 +86,6 @@ stages:
             socketTimeout: '30000'
             retryCount: 8
 
-        - script: |
-            echo Using $(tfVarsFile.secureFilePath) as Terraform input....
-
         - task: TerraformCLI@0
           displayName: 'terraform plan'
           env:
@@ -104,6 +101,7 @@ stages:
             command: 'plan'
             backendType: azurerm
             ensureBackend: true
+            environmentServiceName: 'SCTerraform'
             backendAzureRmResourceGroupName:  $TF_APS_RESOURCE_GROUP_NAME
             backendAzureRmContainerName:      $TF_APS_RESOURCE_CONTAINER_NAME
             backendAzureRmStorageAccountName: $TF_APS_STORAGE_ACCOUNT_NAME
