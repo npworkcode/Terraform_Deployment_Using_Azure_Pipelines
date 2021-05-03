@@ -59,42 +59,19 @@ stages:
             TF_ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
             TF_ARM_TENANT_ID              : $(aps-tenant-id)  
 
-  
-  - stage: plan
-    dependsOn: [validate]
-    condition: succeeded('validate')
-    jobs:
-      - job: terraform_plan_develop
-        steps:
-
-        - task: DownloadSecureFile@1
-          name: tfVarsFile
-          displayName: 'Download Terraform input variables file'
-          inputs:
-            secureFile: 'terraform.tfvars'
-            socketTimeout: '30000'
-            retryCount: 8
-        - task: DownloadSecureFile@1
-          displayName: "Download Terraform SSH Key"
-          name: tfPublicKey
-          inputs:
-            secureFile: 'tfkey.pub'
-            socketTimeout: '30000'
-            retryCount: 8
-
-        - bash: |
-            terraform plan \
-              -detailed-exitcode \
-              -out=$(System.DefaultWorkingDirectory)/terraform/terraform.tfplan \
-              -var-file="$(tfVarsFile.secureFilePath)" \
-              -var fileloc="$(tfPublicKey.secureFilePath)" \
-              -var ARM_SUBSCRIPTION_ID="$TF_ARM_SUBSCRIPTION_ID" \
-              -var ARM_CLIENT_ID="$TF_ARM_CLIENT_ID" \
-              -var ARM_CLIENT_SECRET="$TF_ARM_CLIENT_SECRET" \
-              -var ARM_TENANT_ID="$TF_ARM_TENANT_ID" 
-          displayName: 'Terraform Plan'
-          env:
-            TF_ARM_CLIENT_ID              : $(aps-arm-client-id)
-            TF_ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
-            TF_ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
-            TF_ARM_TENANT_ID              : $(aps-tenant-id)
+      - bash: |
+          terraform plan \
+            -detailed-exitcode \
+            -out=$(System.DefaultWorkingDirectory)/terraform/terraform.tfplan \
+            -var-file="$(tfVarsFile.secureFilePath)" \
+            -var fileloc="$(tfPublicKey.secureFilePath)" \
+            -var ARM_SUBSCRIPTION_ID="$TF_ARM_SUBSCRIPTION_ID" \
+            -var ARM_CLIENT_ID="$TF_ARM_CLIENT_ID" \
+            -var ARM_CLIENT_SECRET="$TF_ARM_CLIENT_SECRET" \
+            -var ARM_TENANT_ID="$TF_ARM_TENANT_ID" 
+        displayName: 'Terraform Plan'
+        env:
+          TF_ARM_CLIENT_ID              : $(aps-arm-client-id)
+          TF_ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
+          TF_ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
+          TF_ARM_TENANT_ID              : $(aps-tenant-id)
