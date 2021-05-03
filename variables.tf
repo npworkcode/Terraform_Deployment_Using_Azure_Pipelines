@@ -38,6 +38,8 @@ variable "address_space" {}
 variable "kind" {}
 variable "reserved" {}
 
+# VM
+variable "fileloc" {}
 # Tags
 variable "tags" {
     type    = map
