@@ -20,10 +20,6 @@ stages:
     - job: validate
       continueOnError: false
       steps:
-      - task: TerraformInstaller@0
-        displayName: Install Terraform
-        inputs:
-          terraformVersion: 'latest'
       - task: DownloadSecureFile@1
         name: tfPublicKey
         inputs:
@@ -38,8 +34,20 @@ stages:
           secureFile: 'terraform.tfvars'
           socketTimeout: '30000'
           retryCount: 8
-      - task: TerraformCLI@0
-        displayName: 'terraform init'
+
+      - bash: |
+          terraform init \
+            -backend-config="storage_account_name=$TF_APS_STORAGE_ACCOUNT_NAME" \
+            -backend-config="container_name=$TF_APS_CONTAINER_NAME" \
+            -backend-config="key=$TF_APS_KEY" \
+            -backend-config="access_key="$TF_ACCESS_KEY" \
+            -var-file="$(tfVarsFile.secureFilePath)" \
+            -var fileloc="$(tfPublicKey.secureFilePath)" \
+            -var ARM_SUBSCRIPTION_ID="$TF_ARM_SUBSCRIPTION_ID" \
+            -var ARM_CLIENT_ID="$TF_ARM_CLIENT_ID" \
+            -var ARM_CLIENT_SECRET="$TF_ARM_CLIENT_SECRET" \
+            -var ARM_TENANT_ID="$TF_ARM_TENANT_ID" \
+        displayName: "Terraform Init"
         env:
             TF_APS_RESOURCE_GROUP_NAME    : $(aps-resource-group-name)
             TF_APS_CONTAINER_NAME         : $(aps-container-name)
@@ -49,19 +57,7 @@ stages:
             TF_ARM_CLIENT_ID              : $(aps-arm-client-id)
             TF_ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
             TF_ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
-            TF_ARM_TENANT_ID              : $(aps-tenant-id)
-        inputs:
-          command: 'init'
-          allowTelemetryCollection: true
-          backendType: azurerm
-          backendServiceArm: 'SCTerraform'
-          backendAzureRmStorageAccountName: '$TF_APS_STORAGE_ACCOUNT_NAME'
-          backendAzureRmContainerName: '$TF_APS_CONTAINER_NAME'
-          backendAzureRmKey: '$TF_APS_KEY'
-          backendAzureRmResourceGroupName: '$TF_APS_RESOURCE_GROUP_NAME'
-          commandOptions: '-backend-config="access_key=$TF_ACCESS_KEY" -var ARM_CLIENT_ID=$TF_ARM_CLIENT_ID -var ARM_CLIENT_SECRET=$TF_ARM_CLIENT_SECRET -var ARM_SUBSCRIPTION_ID=$TF_ARM_SUBSCRIPTION_ID -var ARM_TENANT_ID=$TF_ARM_TENANT_ID -var fileloc=$(tfPublicKey.secureFilePath)'
-
-
+            TF_ARM_TENANT_ID              : $(aps-tenant-id)  
       - task: TerraformCLI@0
         displayName: 'terraform validate'
         inputs:
