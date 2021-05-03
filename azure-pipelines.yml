@@ -44,8 +44,6 @@ stages:
             TF_ARM_TENANT_ID               : $(aps-tenant-id)
         inputs:
           command: 'init'
-          backendType: azurerm
-          ensureBackend: true
           allowTelemetryCollection: true
           commandOptions:  '-var ARM_CLIENT_ID        = $TF_ARM_CLIENT_ID                                   \
                             -var ARM_CLIENT_SECRET    = $TF_ARM_CLIENT_SECRET                               \
