@@ -54,7 +54,7 @@ stages:
           command: 'init'
           allowTelemetryCollection: true
           backendType: azurerm
-          backendServiceArm: $TF_SERVICE_CONNECTION
+          backendServiceArm: $env:TF_SERVICE_CONNECTION
           backendAzureRmStorageAccountName: '$TF_APS_STORAGE_ACCOUNT_NAME'
           backendAzureRmContainerName: '$TF_APS_RESOURCE_CONTAINER_NAME'
           backendAzureRmKey: '$TF_APS_KEY'
