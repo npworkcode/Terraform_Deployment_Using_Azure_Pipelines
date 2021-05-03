@@ -19,8 +19,6 @@ stages:
     jobs:
     - job: validate
       continueOnError: false
-      variables:
-        SERVICE_CONNECTION : $(aps-service-connection)
       steps:
       - task: TerraformInstaller@0
         displayName: Install Terraform
@@ -55,7 +53,7 @@ stages:
           command: 'init'
           allowTelemetryCollection: true
           backendType: azurerm
-          backendServiceArm: $(SERVICE_CONNECTION)
+          backendServiceArm: 'SCTerraform'
           backendAzureRmStorageAccountName: '$TF_APS_STORAGE_ACCOUNT_NAME'
           backendAzureRmContainerName: '$TF_APS_RESOURCE_CONTAINER_NAME'
           backendAzureRmKey: '$TF_APS_KEY'
@@ -119,3 +117,10 @@ stages:
                               -var ARM_SUBSCRIPTION_ID=$TF_ARM_SUBSCRIPTION_ID   \
                               -var ARM_TENANT_ID=$TF_ARM_TENANT_ID         \
                               -var-file=$(tfVarsFile.secureFilePath)  \'
+
+- task: TerraformCLI@0
+  inputs:
+    command: 'init'
+    backendType: 'azurerm'
+    backendServiceArm: 'SCTerraform'
+    allowTelemetryCollection: true
