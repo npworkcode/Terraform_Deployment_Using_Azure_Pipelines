@@ -51,7 +51,6 @@ stages:
             TF_ARM_TENANT_ID              : $(aps-tenant-id)
         inputs:
           command: 'init'
-          secureVarsFile: '$(tfVarsFile.secureFilePath)'
           allowTelemetryCollection: true
           backendType: azurerm
           backendServiceArm: 'Azure subscription 1(fd267d27-d3b1-4597-81dc-e98d71ee70de)'
