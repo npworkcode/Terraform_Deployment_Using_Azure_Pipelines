@@ -64,4 +64,5 @@ module "vm" {
   location              = var.location
   application_type      = var.application_type
   resource_type         = var.resource_type
+  fileloc               = var.fileloc
 }
