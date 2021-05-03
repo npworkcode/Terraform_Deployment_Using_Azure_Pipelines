@@ -117,10 +117,4 @@ stages:
                               -var ARM_CLIENT_SECRET=$TF_ARM_CLIENT_SECRET     \
                               -var ARM_SUBSCRIPTION_ID=$TF_ARM_SUBSCRIPTION_ID   \
                               -var ARM_TENANT_ID=$TF_ARM_TENANT_ID         \
-                              -var-file=$(tfVarsFile.secureFilePath)  \
-                              - task: TerraformCLI@0
-  inputs:
-    command: 'validate'
-    commandOptions: '-var fileloc=$(tfPublicKey.secureFilePath)'
-    allowTelemetryCollection: true'
-            publishPlanResults: 'terraform.tfplan'
+                              -var-file=$(tfVarsFile.secureFilePath)  \'
