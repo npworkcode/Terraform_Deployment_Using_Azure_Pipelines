@@ -49,11 +49,12 @@ stages:
             TF_ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
             TF_ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
             TF_ARM_TENANT_ID              : $(aps-tenant-id)
+            TF_SERVICE_CONNECTION         : $(aps-service-connection)
         inputs:
           command: 'init'
           allowTelemetryCollection: true
           backendType: azurerm
-          backendServiceArm: $TF_ARM_SUBSCRIPTION_ID
+          backendServiceArm: $TF_SERVICE_CONNECTION
           backendAzureRmStorageAccountName: '$TF_APS_STORAGE_ACCOUNT_NAME'
           backendAzureRmContainerName: '$TF_APS_RESOURCE_CONTAINER_NAME'
           backendAzureRmKey: '$TF_APS_KEY'
