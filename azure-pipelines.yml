@@ -74,8 +74,6 @@ stages:
 
       - bash: |
           terraform apply \
-            -var-file="$(tfVarsFile.secureFilePath)" \
-            -var fileloc="$(tfPublicKey.secureFilePath)" \
             -auto-approve terraform.tfplan 
         displayName: 'Terraform Apply'
         name: 'TerraformApply'
