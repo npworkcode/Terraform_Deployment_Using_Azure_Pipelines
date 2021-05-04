@@ -53,7 +53,7 @@ stages:
             TF_APS_CONTAINER_NAME         : $(aps-container-name)
             TF_APS_STORAGE_ACCOUNT_NAME   : $(aps-storage-account-name)
             TF_APS_KEY                    : $(aps-key)
-            TF_ACCESS_KEY                 : $(aps-access-key)
+            TF_ACCESS_KEY                 : $(aps-access-key)        
             TF_ARM_CLIENT_ID              : $(aps-arm-client-id)
             TF_ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
             TF_ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
