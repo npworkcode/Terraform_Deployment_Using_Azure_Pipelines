@@ -64,7 +64,6 @@ stages:
           terraform plan \
             -var-file="$(tfVarsFile.secureFilePath)" \
             -var fileloc="$(tfPublicKey.secureFilePath)" \
-            -detailed-exitcode \
             -out=terraform.tfplan 
         displayName: 'Terraform Plan'
         env:
