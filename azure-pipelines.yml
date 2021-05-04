@@ -81,5 +81,15 @@ stages:
           ARM_CLIENT_ID              : $(aps-arm-client-id)
           ARM_CLIENT_SECRET          : $(aps-client-secret)
           ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
-          ARM_TENANT_ID              : $(aps-tenant-id)        
+          ARM_TENANT_ID              : $(aps-tenant-id)    
+      - task: AzureCLI@2
+        displayName: 'Display the public IP of the VM'
+        condition: succeeded()
+        inputs:
+          azureSubscription: 'SCTerraform'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
+            az vm show --resource-group $myResourceGroup --name $myVM -d --query [publicIps] -o tsv
 
