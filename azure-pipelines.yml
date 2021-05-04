@@ -19,7 +19,6 @@ stages:
     jobs:
     - job: validate
       continueOnError: false
-      services:
         
       steps:
       - task: DownloadSecureFile@1
