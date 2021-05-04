@@ -56,7 +56,7 @@ stages:
             TF_APS_KEY                    : $(aps-key)
             TF_ACCESS_KEY                 : $(aps-access-key)        
             TF_ARM_CLIENT_ID              : $(aps-arm-client-id)
-            TF_ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
+            TF_ARM_CLIENT_SECRET          : $(aps-client-secret)
             TF_ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
             TF_ARM_TENANT_ID              : $(aps-tenant-id)  
 
@@ -69,6 +69,6 @@ stages:
         displayName: 'Terraform Plan'
         env:
           ARM_CLIENT_ID              : $(aps-arm-client-id)
-          ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
+          ARM_CLIENT_SECRET          : $(aps-client-secret)
           ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
           ARM_TENANT_ID              : $(aps-tenant-id)
