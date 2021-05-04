@@ -83,21 +83,3 @@ stages:
           ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
           ARM_TENANT_ID              : $(aps-tenant-id)        
 
-      - bash: |
-          echo 'The public id of the VM is $TF_OUT_PUBLIC_IP_ADDRESS_ID'
-        displayName: "Show the public id after Creation"
-        condition: succeeded()
-
-      - task: AzureCLI@2
-        condition: succeeded()
-        inputs:
-          azureSubscription: 'TerraformSP'
-          scriptType: 'ps'
-          scriptLocation: 'inlineScript'
-          inlineScript: |
-            az login --service-principal -u $env:ARM_CLIENT_ID -p $env:ARM_CLIENT_SECRET --tenant $env:ARM_TENANT_ID
-            az vm show --resource-group $env:myResourceGroup --name $env:myVM -d --query[publicIps] -o tsv
-        env:
-          ARM_CLIENT_ID              : $(aps-arm-client-id)
-          ARM_CLIENT_SECRET          : $(aps-client-secret)
-          ARM_TENANT_ID              : $(aps-tenant-id)       
