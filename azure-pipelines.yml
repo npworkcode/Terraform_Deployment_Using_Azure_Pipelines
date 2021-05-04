@@ -62,17 +62,13 @@ stages:
 
       - bash: |
           terraform plan \
-            -var ARM_SUBSCRIPTION_ID="$TF_ARM_SUBSCRIPTION_ID" \
-            -var ARM_CLIENT_SECRET="$TF_ARM_CLIENT_SECRET" \
-            -var ARM_CLIENT_ID="$TF_ARM_CLIENT_ID" \
-            -var ARM_TENANT_ID="$TF_ARM_TENANT_ID" \
             -var-file="$(tfVarsFile.secureFilePath)" \
             -var fileloc="$(tfPublicKey.secureFilePath)" \
             -detailed-exitcode \
             -out=$(System.DefaultWorkingDirectory)/terraform/terraform.tfplan 
         displayName: 'Terraform Plan'
         env:
-          TF_ARM_CLIENT_ID              : $(aps-arm-client-id)
-          TF_ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
-          TF_ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
-          TF_ARM_TENANT_ID              : $(aps-tenant-id)
+          ARM_CLIENT_ID              : $(aps-arm-client-id)
+          ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
+          ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
+          ARM_TENANT_ID              : $(aps-tenant-id)
