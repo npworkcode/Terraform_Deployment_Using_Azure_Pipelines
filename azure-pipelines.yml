@@ -88,10 +88,10 @@ stages:
       - bash: |
           echo 'The public id of the VM is $TF_OUT_PUBLIC_IP_ADDRESS_ID'
         displayName: "Show the public id after Creation"
-        condition: succeeded(TerraformApply)
+        condition: succeeded()
 
       - task: AzureCLI@2
-        condition: succeeded(TerraformApply)
+        condition: succeeded()
         inputs:
           azureSubscription: 'TerraformSP'
           scriptType: 'ps'
