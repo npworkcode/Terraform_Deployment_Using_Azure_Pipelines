@@ -61,30 +61,24 @@ stages:
             TF_ARM_TENANT_ID              : $(aps-tenant-id)  
 
 
-      - task: AzureCLI@2
-        displayName: "Terraform Plan"
-        inputs:
-          azureSubscription: 'SCTerraform'
-          scriptType: 'bash'
-          scriptLocation: 'inlineScript'
-          inlineScript: |
-            terraform plan \
-                        -detailed-exitcode \
-                        -out=$(System.DefaultWorkingDirectory)/terraform/terraform.tfplan \
-                        -var-file="$(tfVarsFile.secureFilePath)" \
-                        -var fileloc="$(tfPublicKey.secureFilePath)" \
-                        -var ARM_SUBSCRIPTION_ID="$TF_ARM_SUBSCRIPTION_ID" \
-                        -var ARM_CLIENT_SECRET="$TF_ARM_CLIENT_SECRET" \
-                        -var ARM_CLIENT_ID="$TF_ARM_CLIENT_ID" \
-                        -var ARM_TENANT_ID="$TF_ARM_TENANT_ID"
-            env:
-              TF_APS_RESOURCE_GROUP_NAME    : $(aps-resource-group-name)
-              TF_APS_CONTAINER_NAME         : $(aps-container-name)
-              TF_APS_STORAGE_ACCOUNT_NAME   : $(aps-storage-account-name)
-              TF_APS_KEY                    : $(aps-key)
-              TF_ACCESS_KEY                 : $(aps-access-key)
-              TF_ARM_CLIENT_ID              : $(aps-arm-client-id)
-              TF_ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
-              TF_ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
-              TF_ARM_TENANT_ID              : $(aps-tenant-id)
-          addSpnToEnvironment: true
+      - bash: |
+          terraform plan \
+            -detailed-exitcode \
+            -out=$(System.DefaultWorkingDirectory)/terraform/terraform.tfplan \
+            -var-file="$(tfVarsFile.secureFilePath)" \
+            -var fileloc="$(tfPublicKey.secureFilePath)" \
+            -var ARM_SUBSCRIPTION_ID="$TF_ARM_SUBSCRIPTION_ID" \
+            -var ARM_CLIENT_SECRET="$TF_ARM_CLIENT_SECRET" \
+            -var ARM_CLIENT_ID="$TF_ARM_CLIENT_ID" \
+            -var ARM_TENANT_ID="$TF_ARM_TENANT_ID" 
+        displayName: 'Terraform Plan'
+        env:
+          TF_APS_RESOURCE_GROUP_NAME    : $(aps-resource-group-name)
+          TF_APS_CONTAINER_NAME         : $(aps-container-name)
+          TF_APS_STORAGE_ACCOUNT_NAME   : $(aps-storage-account-name)
+          TF_APS_KEY                    : $(aps-key)
+          TF_ACCESS_KEY                 : $(aps-access-key)
+          TF_ARM_CLIENT_ID              : $(aps-arm-client-id)
+          TF_ARM_CLIENT_SECRET          : $(aps-arm-client-secret)
+          TF_ARM_SUBSCRIPTION_ID        : $(aps-subscription-id)
+          TF_ARM_TENANT_ID              : $(aps-tenant-id)
