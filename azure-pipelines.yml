@@ -65,7 +65,7 @@ stages:
             -var-file="$(tfVarsFile.secureFilePath)" \
             -var fileloc="$(tfPublicKey.secureFilePath)" \
             -detailed-exitcode \
-            -out=$(System.DefaultWorkingDirectory)/terraform/terraform.tfplan 
+            -out=terraform.tfplan 
         displayName: 'Terraform Plan'
         env:
           ARM_CLIENT_ID              : $(aps-arm-client-id)
