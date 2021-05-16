@@ -24,7 +24,7 @@ stages:
       - task: DownloadSecureFile@1
         name: tfPublicKey
         inputs:
-          secureFile: deploy_key.pub'
+          secureFile: 'deploy_key.pub'
           socketTimeout: '30000'
           retryCount: 8
 
