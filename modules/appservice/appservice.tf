@@ -6,8 +6,8 @@ resource "azurerm_app_service_plan" "test" {
   reserved            = var.reserved
   tags                = var.tags
   sku {
-    tier              = "Free"
-    size              = "F1"
+    tier              = "Basic"
+    size              = "B1"
   }
   
 }
