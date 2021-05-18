@@ -1,10 +1,10 @@
 # Resource Group/Location
 location        = "eastus2"
-resource_group  = "pythonRG"
+resource_group  = "projectrg"
 
 # App Service Plan & App Service
-application_type = "Python"
-resource_type    = "Linux"
+application_type = "python"
+resource_type    = "linux"
 kind             = "Linux"
 reserved         = "true"
 
