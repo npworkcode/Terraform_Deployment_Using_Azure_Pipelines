@@ -64,7 +64,7 @@ stages:
           terraform plan \
             -var-file="$(tfVarsFile.secureFilePath)" \
             -var fileloc="$(tfPublicKey.secureFilePath)" \
-            -out=tf.tfplan 
+            -out=terraform.tfplan 
         displayName: 'Terraform Plan'
         env:
           ARM_CLIENT_ID              : $(aps-arm-client-id)
@@ -74,7 +74,7 @@ stages:
 
       - bash: |
           terraform apply \
-            -auto-approve tf.tfplan 
+            -auto-approve terraform.tfplan 
         displayName: 'Terraform Apply'
         name: 'TerraformApply'
         env:
